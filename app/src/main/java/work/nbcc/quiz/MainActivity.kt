@@ -2,8 +2,10 @@ package work.nbcc.quiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,22 +32,54 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_20, true))
 
     private var questionIndex = 0
-
-    private lateinit var questionView : TextView
-    private lateinit var nextButton: ImageButton
-
+    private lateinit var questionView: TextView
+    private  lateinit var nextButton: ImageButton
+    private lateinit var previusButton : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        questionView = findViewById(R.id.question_view)
-        nextButton = findViewById(R.id.next_button)
 
-        questionView.setText(questionBank[questionIndex].textResId)
-        nextButton.setOnClickListener {
+
+        findViewById<TextView>(R.id.question_view).setText(questionBank[questionIndex].textResId)
+
+        findViewById<ImageButton>(R.id.next_button).setOnClickListener{
             questionIndex = (questionIndex + 1) % 20
-            questionView.setText(questionBank[questionIndex].textResId)}
-    }
-}
+            findViewById<TextView>(R.id.question_view).setText(questionBank[questionIndex].textResId)
+        }
 
+        findViewById<ImageButton>(R.id.p_button).setOnClickListener{
+            questionIndex = (questionIndex - 1) % 20
+            findViewById<TextView>(R.id.question_view).setText(questionBank[questionIndex].textResId)
+        }
+
+        findViewById<Button>(R.id.true_button).setOnClickListener{
+            if(questionBank.get(questionIndex).answer){
+                val toast = Toast.makeText(applicationContext, "You are right!", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            else
+            {
+                val toast = Toast.makeText(applicationContext, "You are wrong!", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }
+
+        findViewById<Button>(R.id.false_button).setOnClickListener{
+            if(!questionBank.get(questionIndex).answer){
+                val toast = Toast.makeText(applicationContext, "You are right!", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            else
+            {
+                val toast = Toast.makeText(applicationContext, "You are wrong!", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }
+
+
+    }
+
+
+}
